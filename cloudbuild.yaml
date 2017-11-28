@@ -1,0 +1,22 @@
+steps:
+- name: 'gcr.io/cloud-builders/git'
+  waitFor: [ '-' ]
+  args: ['config', 'user.email', '"container-builder@ntr.io"']
+- name: 'gcr.io/cloud-builders/git'
+  waitFor: [ '-' ]
+  args: ['config', 'user.name', '"Uncle Bob"']
+
+- name: 'gcr.io/cloud-builders/docker'
+  id: 'docker-build'
+  args: ['build', '-t', 'gcr.io/ntr-inbox/nlu:$TAG_NAME', '.']
+
+- name: 'gcr.io/cloud-builders/git'
+  id: 'git-tag'
+  waitFor: [ 'docker-build' ]
+  args: ['tag', '-a', 'b-$BUILD_ID', '$COMMIT_SHA', '-m', '""']
+
+- name: 'gcr.io/cloud-builders/git'
+  waitFor: [ 'git-tag' ]
+  args: ['push', 'origin', 'b-$BUILD_ID']
+
+images: [ 'gcr.io/ntr-inbox/nlu:$TAG_NAME' ]
