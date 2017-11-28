@@ -8,7 +8,7 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   id: 'docker-build'
-  args: ['build', '-t', '$_IMAGE_REPO:$TAG_NAME', '.']
+  args: ['build', '-t', '$_IMAGE_REPO:$TAG_NAME', './docker/Dockerfile_full']
 
 - name: 'gcr.io/cloud-builders/git'
   id: 'git-tag'
