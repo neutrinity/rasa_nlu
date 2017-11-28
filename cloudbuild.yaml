@@ -8,7 +8,7 @@ steps:
 
 - name: 'gcr.io/cloud-builders/docker'
   id: 'docker-build'
-  args: ['build', '-t', 'gcr.io/ntr-inbox/nlu:$TAG_NAME', '.']
+  args: ['build', '-t', '$_IMAGE_REPO:$TAG_NAME', '.']
 
 - name: 'gcr.io/cloud-builders/git'
   id: 'git-tag'
@@ -19,4 +19,4 @@ steps:
   waitFor: [ 'git-tag' ]
   args: ['push', 'origin', 'b-$BUILD_ID']
 
-images: [ 'gcr.io/ntr-inbox/nlu:$TAG_NAME' ]
+images: [ '$_IMAGE_REPO:$TAG_NAME' ]
